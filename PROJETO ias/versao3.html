@@ -1,0 +1,1173 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA além dos Chatbots | Projeto</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080d1b;
+            --bg-secondary: #0e1730;
+            --surface: rgba(20, 31, 57, .76);
+            --surface-solid: #121d37;
+            --text: #edf5ff;
+            --muted: #9baac5;
+            --primary: #62d9ff;
+            --secondary: #a88bff;
+            --pink: #f3a5df;
+            --border: rgba(125, 190, 255, .16);
+            --shadow: 0 20px 60px rgba(0, 0, 0, .25);
+        }
+
+        body.light {
+            --bg: #edf5ff;
+            --bg-secondary: #e1edff;
+            --surface: rgba(255, 255, 255, .78);
+            --surface-solid: #ffffff;
+            --text: #172440;
+            --muted: #63718c;
+            --primary: #087fae;
+            --secondary: #7853d5;
+            --pink: #c04f9d;
+            --border: rgba(53, 107, 170, .18);
+            --shadow: 0 20px 60px rgba(45, 75, 120, .12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background:
+                radial-gradient(ellipse at 15% 5%, rgba(38, 128, 202, .16), transparent 35%),
+                radial-gradient(ellipse at 85% 25%, rgba(132, 83, 210, .13), transparent 35%),
+                var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            transition: background .3s, color .3s;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button, input, select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        #progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--pink));
+            z-index: 1000;
+        }
+
+        .background-glow {
+            position: fixed;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            filter: blur(110px);
+            opacity: .12;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .glow-one {
+            background: #00c8ff;
+            top: 15%;
+            left: -180px;
+        }
+
+        .glow-two {
+            background: #985cff;
+            right: -180px;
+            top: 55%;
+        }
+
+        header {
+            min-height: 530px;
+            padding: 90px 8% 100px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(135deg, rgba(23, 78, 133, .18), rgba(93, 57, 151, .12));
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            width: 440px;
+            height: 440px;
+            border: 1px solid rgba(98, 217, 255, .16);
+            border-radius: 50%;
+            right: 7%;
+            top: 45px;
+            box-shadow:
+                0 0 0 35px rgba(98, 217, 255, .025),
+                0 0 0 75px rgba(98, 217, 255, .02);
+        }
+
+        header::after {
+            content: "AI / FUTURE / TECHNOLOGY";
+            position: absolute;
+            right: 9%;
+            bottom: 65px;
+            color: var(--muted);
+            opacity: .5;
+            letter-spacing: 5px;
+            font-size: 10px;
+        }
+
+        .hero {
+            max-width: 850px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            color: var(--primary);
+            border: 1px solid var(--border);
+            background: var(--surface);
+            border-radius: 30px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: clamp(42px, 7vw, 76px);
+            font-weight: 700;
+            letter-spacing: -3px;
+            max-width: 800px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            max-width: 620px;
+            margin-top: 25px;
+            color: var(--muted);
+            font-size: 17px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-top: 32px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 13px 22px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 13px;
+            transition: .25s;
+            border: 1px solid var(--border);
+        }
+
+        .btn-primary {
+            background: linear-gradient(110deg, #35bce9, #8171ee);
+            color: #081225;
+            border: none;
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text);
+        }
+
+        .btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(73, 168, 255, .2);
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--surface-solid);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+            padding: 13px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted);
+            transition: .2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .theme-button {
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            padding: 9px 13px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        main {
+            max-width: 1150px;
+            margin: auto;
+            padding: 65px 6%;
+        }
+
+        section {
+            margin-bottom: 95px;
+            scroll-margin-top: 100px;
+        }
+
+        .section-label {
+            color: var(--primary);
+            font-size: 11px;
+            letter-spacing: 3px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: clamp(28px, 4vw, 42px);
+            margin-bottom: 15px;
+        }
+
+        .section-description {
+            color: var(--muted);
+            max-width: 700px;
+            margin-bottom: 30px;
+        }
+
+        .notion-card {
+            padding: 32px;
+            border-radius: 22px;
+            background:
+                linear-gradient(120deg, rgba(56, 177, 224, .13), rgba(139, 104, 235, .13)),
+                var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .notion-card::after {
+            content: "NOTION";
+            position: absolute;
+            right: 25px;
+            top: 25px;
+            font-size: 12px;
+            letter-spacing: 4px;
+            color: var(--primary);
+            opacity: .6;
+        }
+
+        .notion-card h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .notion-card p {
+            color: var(--muted);
+            max-width: 700px;
+            margin-bottom: 22px;
+        }
+
+        .notion-link {
+            display: inline-block;
+            color: var(--primary);
+            font-weight: 700;
+            border-bottom: 1px solid var(--primary);
+            padding-bottom: 4px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-top: 28px;
+        }
+
+        .info-card {
+            padding: 23px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            border-radius: 17px;
+        }
+
+        .info-card .icon {
+            font-size: 26px;
+            margin-bottom: 13px;
+        }
+
+        .info-card h3 {
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+
+        .info-card p {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 28px 0;
+        }
+
+        .toolbar input,
+        .toolbar select {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 11px;
+            padding: 13px 15px;
+            outline: none;
+        }
+
+        .toolbar input {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .toolbar input:focus,
+        .toolbar select:focus {
+            border-color: var(--primary);
+        }
+
+        .toolbar select option {
+            background: var(--surface-solid);
+            color: var(--text);
+        }
+
+        .results-count {
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+
+        .ai-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .ai-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 19px;
+            padding: 25px;
+            transition: .3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-card::before {
+            content: "";
+            position: absolute;
+            height: 3px;
+            top: 0;
+            left: 0;
+            width: 0;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: .35s;
+        }
+
+        .ai-card:hover {
+            transform: translateY(-7px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+
+        .ai-card:hover::before {
+            width: 100%;
+        }
+
+        .ai-icon {
+            font-size: 31px;
+            margin-bottom: 17px;
+        }
+
+        .ai-card h3 {
+            font-size: 21px;
+            margin-bottom: 8px;
+        }
+
+        .category {
+            display: inline-block;
+            color: var(--primary);
+            background: rgba(74, 190, 235, .10);
+            border-radius: 30px;
+            padding: 5px 11px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .ai-card p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 17px;
+        }
+
+        .ai-card a {
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .ai-card a:hover {
+            text-decoration: underline;
+        }
+
+        .no-results {
+            display: none;
+            padding: 30px;
+            border: 1px dashed var(--border);
+            border-radius: 15px;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .importance {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .importance-card {
+            padding: 27px;
+            border-radius: 18px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+
+        .importance-card h3 {
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .importance-card p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .conclusion {
+            padding: 40px;
+            border-radius: 23px;
+            background: linear-gradient(120deg, rgba(54, 180, 226, .13), rgba(143, 99, 224, .15));
+            border: 1px solid var(--border);
+        }
+
+        .conclusion p {
+            color: var(--muted);
+            margin-top: 15px;
+        }
+
+        .references {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .reference {
+            padding: 15px 18px;
+            border-radius: 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 13px;
+            transition: .2s;
+        }
+
+        .reference:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        footer {
+            text-align: center;
+            padding: 35px 20px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        footer strong {
+            color: var(--primary);
+        }
+
+        #backTop {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 45px;
+            height: 45px;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            background: var(--surface-solid);
+            color: var(--primary);
+            font-size: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(10px);
+            transition: .3s;
+            z-index: 90;
+        }
+
+        #backTop.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity .7s ease, transform .7s ease;
+        }
+
+        .reveal.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .finish-message {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 13px;
+            margin-top: 15px;
+            min-height: 20px;
+        }
+
+        @media (max-width: 850px) {
+            .ai-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                flex-wrap: wrap;
+            }
+
+            .nav-links {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                min-height: 480px;
+                padding: 65px 7%;
+            }
+
+            header::before,
+            header::after {
+                display: none;
+            }
+
+            h1 {
+                letter-spacing: -2px;
+            }
+
+            .ai-grid,
+            .importance,
+            .references {
+                grid-template-columns: 1fr;
+            }
+
+            main {
+                padding: 50px 6%;
+            }
+
+            .notion-card,
+            .conclusion {
+                padding: 24px;
+            }
+
+            .nav-links {
+                gap: 12px;
+            }
+
+            .nav-links a {
+                font-size: 10px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                transition-duration: .01ms !important;
+                animation-duration: .01ms !important;
+            }
+
+            .reveal {
+                opacity: 1;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="progress"></div>
+<div class="background-glow glow-one"></div>
+<div class="background-glow glow-two"></div>
+
+<header id="inicio">
+    <div class="hero">
+        <span class="eyebrow">PROJETO DE TECNOLOGIA • 2026</span>
+
+        <h1>
+            Inteligências Artificiais
+            <span class="gradient-text">além dos Chatbots.</span>
+        </h1>
+
+        <p>
+            A inteligência artificial está muito além das conversas.
+            Ela cria músicas, imagens, vídeos, reconhece objetos e
+            transforma a maneira como interagimos com a tecnologia.
+            Vamos explorar esse universo?
+        </p>
+
+        <div class="hero-buttons">
+            <a href="#sobre" class="btn btn-primary">Explorar projeto ↗</a>
+            <a href="#ferramentas" class="btn btn-secondary">Conhecer as IAs</a>
+        </div>
+    </div>
+</header>
+
+<nav>
+    <a href="#inicio" class="logo">IA.EXPLORER</a>
+
+    <div class="nav-links">
+        <a href="#sobre">Sobre</a>
+        <a href="#diario">Diário</a>
+        <a href="#ferramentas">Ferramentas</a>
+        <a href="#importancia">Importância</a>
+        <a href="#referencias">Fontes</a>
+    </div>
+
+    <button class="theme-button" id="themeToggle" aria-label="Alternar tema">
+        ☀️ Tema
+    </button>
+</nav>
+
+<main>
+
+    <section id="sobre" class="reveal">
+        <div class="section-label">01 / INTRODUÇÃO</div>
+        <h2 class="section-title">A IA está em todo lugar.</h2>
+
+        <p class="section-description">
+            Quando pensamos em inteligência artificial, é comum lembrar
+            de ferramentas que respondem perguntas. Porém, existem muitas
+            outras tecnologias que utilizam IA para realizar tarefas
+            diferentes, muitas vezes sem precisar conversar com ninguém.
+        </p>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="icon">🎨</div>
+                <h3>Criação</h3>
+                <p>Produção de imagens, músicas, vídeos e outros conteúdos digitais.</p>
+            </div>
+
+            <div class="info-card">
+                <div class="icon">👁️</div>
+                <h3>Reconhecimento</h3>
+                <p>Identificação de objetos, textos, imagens e elementos do mundo real.</p>
+            </div>
+
+            <div class="info-card">
+                <div class="icon">🌐</div>
+                <h3>Comunicação</h3>
+                <p>Tradução de idiomas e geração de vozes artificiais.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="diario" class="reveal">
+        <div class="section-label">02 / ACOMPANHAMENTO</div>
+        <h2 class="section-title">Por trás do projeto.</h2>
+
+        <div class="notion-card">
+            <h3>📓 Diário de desenvolvimento do projeto</h3>
+
+            <p>
+                Neste espaço, registramos o desenvolvimento do trabalho
+                durante as aulas: as atividades realizadas, as pesquisas,
+                as ideias, as etapas de programação e a evolução do site.
+            </p>
+
+            <a
+                class="notion-link"
+                href="https://childlike-numeric-e5b.notion.site/Di-rio-de-desenvolvimento-do-projeto-IAs-Al-m-dos-Chatbots-414c31126b1e80458131de09fd897839?pvs=73"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Acessar diário no Notion ↗
+            </a>
+        </div>
+    </section>
+
+    <section id="ferramentas" class="reveal">
+        <div class="section-label">03 / EXPLORAÇÃO</div>
+        <h2 class="section-title">Conheça outras inteligências artificiais.</h2>
+
+        <p class="section-description">
+            Cada ferramenta possui uma finalidade diferente.
+            Pesquise pelo nome ou filtre por categoria para descobrir
+            algumas das possibilidades da inteligência artificial.
+        </p>
+
+        <div class="toolbar">
+            <input
+                type="search"
+                id="searchInput"
+                placeholder="🔎 Pesquisar uma ferramenta..."
+                aria-label="Pesquisar ferramentas"
+            >
+
+            <select id="categoryFilter" aria-label="Filtrar por categoria">
+                <option value="all">Todas as categorias</option>
+                <option value="music">Música</option>
+                <option value="image">Imagem e design</option>
+                <option value="video">Vídeo</option>
+                <option value="vision">Reconhecimento visual</option>
+                <option value="translation">Tradução</option>
+                <option value="voice">Voz e áudio</option>
+            </select>
+        </div>
+
+        <p class="results-count" id="resultsCount" aria-live="polite">
+            6 ferramentas encontradas
+        </p>
+
+        <div class="ai-grid" id="aiGrid">
+
+            <article class="ai-card" data-category="music">
+                <div class="ai-icon">🎵</div>
+                <span class="category">Música</span>
+                <h3>Suno</h3>
+                <p>
+                    Cria músicas a partir de descrições em texto,
+                    podendo gerar melodias, instrumentais e vocais.
+                </p>
+                <a href="https://suno.com/" target="_blank" rel="noopener noreferrer">
+                    Conhecer ferramenta ↗
+                </a>
+            </article>
+
+            <article class="ai-card" data-category="image">
+                <div class="ai-icon">🎨</div>
+                <span class="category">Imagem e design</span>
+                <h3>Adobe Firefly</h3>
+                <p>
+                    Utiliza inteligência artificial para gerar e editar
+                    imagens, efeitos visuais e elementos gráficos.
+                </p>
+                <a href="https://firefly.adobe.com/" target="_blank" rel="noopener noreferrer">
+                    Conhecer ferramenta ↗
+                </a>
+            </article>
+
+            <article class="ai-card" data-category="video">
+                <div class="ai-icon">🎬</div>
+                <span class="category">Vídeo</span>
+                <h3>Runway</h3>
+                <p>
+                    Oferece recursos de IA para criação, edição e
+                    transformação de vídeos e conteúdos visuais.
+                </p>
+                <a href="https://runwayml.com/" target="_blank" rel="noopener noreferrer">
+                    Conhecer ferramenta ↗
+                </a>
+            </article>
+
+            <article class="ai-card" data-category="vision">
+                <div class="ai-icon">📷</div>
+                <span class="category">Reconhecimento visual</span>
+                <h3>Google Lens</h3>
+                <p>
+                    Analisa imagens para identificar objetos,
+                    reconhecer textos e encontrar informações visuais.
+                </p>
+                <a href="https://lens.google/" target="_blank" rel="noopener noreferrer">
+                    Conhecer ferramenta ↗
+                </a>
+            </article>
+
+            <article class="ai-card" data-category="translation">
+                <div class="ai-icon">🌍</div>
+                <span class="category">Tradução</span>
+                <h3>DeepL Translator</h3>
+                <p>
+                    Utiliza inteligência artificial para traduzir textos
+                    entre diferentes idiomas, considerando o contexto.
+                </p>
+                <a href="https://www.deepl.com/translator" target="_blank" rel="noopener noreferrer">
+                    Conhecer ferramenta ↗
+                </a>
+            </article>
+
+            <article class="ai-card" data-category="voice">
+                <div class="ai-icon">🎙️</div>
+                <span class="category">Voz e áudio</span>
+                <h3>ElevenLabs</h3>
+                <p>
+                    Gera vozes artificiais e permite transformar textos
+                    em áudio com diferentes características vocais.
+                </p>
+                <a href="https://elevenlabs.io/" target="_blank" rel="noopener noreferrer">
+                    Conhecer ferramenta ↗
+                </a>
+            </article>
+
+        </div>
+
+        <div class="no-results" id="noResults">
+            Nenhuma ferramenta encontrada. Tente outra pesquisa! 🔎
+        </div>
+    </section>
+
+    <section id="importancia" class="reveal">
+        <div class="section-label">04 / REFLEXÃO</div>
+        <h2 class="section-title">Por que essas tecnologias importam?</h2>
+
+        <p class="section-description">
+            A inteligência artificial já faz parte de diversas atividades
+            do cotidiano e pode transformar diferentes áreas da sociedade.
+        </p>
+
+        <div class="importance">
+            <div class="importance-card">
+                <h3>⚡ Mais possibilidades</h3>
+                <p>
+                    A IA permite desenvolver novas formas de criar,
+                    produzir e resolver problemas em diferentes áreas.
+                </p>
+            </div>
+
+            <div class="importance-card">
+                <h3>🔬 Avanço científico</h3>
+                <p>
+                    Pode auxiliar pesquisas, análises e processos
+                    em áreas como medicina, ciência e educação.
+                </p>
+            </div>
+
+            <div class="importance-card">
+                <h3>🎭 Criatividade</h3>
+                <p>
+                    Oferece ferramentas que ajudam artistas, músicos,
+                    designers e criadores a experimentar novas ideias.
+                </p>
+            </div>
+
+            <div class="importance-card">
+                <h3>⚖️ Uso responsável</h3>
+                <p>
+                    Apesar dos benefícios, é importante considerar
+                    privacidade, direitos autorais, erros e impactos sociais.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="conclusao" class="reveal">
+        <div class="section-label">05 / CONCLUSÃO</div>
+
+        <div class="conclusion">
+            <h2 class="section-title">O futuro vai muito além das conversas.</h2>
+
+            <p>
+                A inteligência artificial não se limita a responder
+                perguntas. Ela pode criar, reconhecer, traduzir,
+                transformar e auxiliar em inúmeras atividades.
+            </p>
+
+            <p>
+                Conhecer essas ferramentas nos ajuda a compreender
+                melhor o mundo tecnológico e a utilizar essas
+                possibilidades de maneira consciente e responsável.
+            </p>
+        </div>
+    </section>
+
+    <section id="referencias" class="reveal">
+        <div class="section-label">06 / CONSULTA</div>
+        <h2 class="section-title">Referências e ferramentas.</h2>
+
+        <p class="section-description">
+            Sites oficiais das ferramentas apresentadas neste projeto.
+        </p>
+
+        <div class="references">
+            <a class="reference" href="https://suno.com/" target="_blank" rel="noopener noreferrer">Suno ↗</a>
+            <a class="reference" href="https://firefly.adobe.com/" target="_blank" rel="noopener noreferrer">Adobe Firefly ↗</a>
+            <a class="reference" href="https://runwayml.com/" target="_blank" rel="noopener noreferrer">Runway ↗</a>
+            <a class="reference" href="https://lens.google/" target="_blank" rel="noopener noreferrer">Google Lens ↗</a>
+            <a class="reference" href="https://www.deepl.com/translator" target="_blank" rel="noopener noreferrer">DeepL Translator ↗</a>
+            <a class="reference" href="https://elevenlabs.io/" target="_blank" rel="noopener noreferrer">ElevenLabs ↗</a>
+        </div>
+    </section>
+
+    <section class="reveal">
+        <div class="conclusion">
+            <h2>Você chegou ao fim! 💙</h2>
+            <p>
+                Obrigado por explorar este projeto e conhecer um pouco
+                mais sobre as inteligências artificiais além dos chatbots.
+            </p>
+
+            <button class="btn btn-primary" id="finishButton" style="margin-top: 20px;">
+                Finalizar visita ✓
+            </button>
+
+            <p class="finish-message" id="finishMessage" aria-live="polite"></p>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p>Desenvolvido para um projeto escolar • <strong>IA.EXPLORER</strong></p>
+    <p>Explorando tecnologia, criatividade e inovação.</p>
+</footer>
+
+<button id="backTop" aria-label="Voltar ao topo">↑</button>
+
+<script>
+    // ALTERNAR ENTRE TEMA ESCURO E CLARO
+
+    const themeToggle = document.getElementById("themeToggle");
+
+    themeToggle.addEventListener("click", () => {
+        document.body.classList.toggle("light");
+
+        const isLight = document.body.classList.contains("light");
+
+        themeToggle.textContent = isLight ? "🌙 Tema" : "☀️ Tema";
+
+        themeToggle.setAttribute(
+            "aria-label",
+            isLight ? "Ativar tema escuro" : "Ativar tema claro"
+        );
+    });
+
+
+    // PESQUISA E FILTRO DAS FERRAMENTAS
+
+    const searchInput = document.getElementById("searchInput");
+    const categoryFilter = document.getElementById("categoryFilter");
+    const aiCards = document.querySelectorAll(".ai-card");
+    const resultsCount = document.getElementById("resultsCount");
+    const noResults = document.getElementById("noResults");
+
+    function filterTools() {
+        const search = searchInput.value.toLowerCase().trim();
+        const category = categoryFilter.value;
+
+        let visible = 0;
+
+        aiCards.forEach(card => {
+            const content = card.textContent.toLowerCase();
+            const cardCategory = card.dataset.category;
+
+            const matchesSearch = content.includes(search);
+            const matchesCategory =
+                category === "all" || category === cardCategory;
+
+            const shouldShow = matchesSearch && matchesCategory;
+
+            card.style.display = shouldShow ? "" : "none";
+
+            if (shouldShow) visible++;
+        });
+
+        resultsCount.textContent =
+            visible + (visible === 1
+                ? " ferramenta encontrada"
+                : " ferramentas encontradas");
+
+        noResults.style.display = visible === 0 ? "block" : "none";
+    }
+
+    searchInput.addEventListener("input", filterTools);
+    categoryFilter.addEventListener("change", filterTools);
+
+
+    // ANIMAÇÕES DE ENTRADA
+
+    const revealElements = document.querySelectorAll(".reveal");
+
+    if ("IntersectionObserver" in window) {
+        const revealObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("show");
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.12
+        });
+
+        revealElements.forEach(element => {
+            revealObserver.observe(element);
+        });
+    } else {
+        revealElements.forEach(element => {
+            element.classList.add("show");
+        });
+    }
+
+
+    // BARRA DE PROGRESSO E BOTÃO VOLTAR AO TOPO
+
+    const progress = document.getElementById("progress");
+    const backTop = document.getElementById("backTop");
+
+    function updateScroll() {
+        const scrollable =
+            document.documentElement.scrollHeight - window.innerHeight;
+
+        const percentage = scrollable > 0
+            ? (window.scrollY / scrollable) * 100
+            : 0;
+
+        progress.style.width = percentage + "%";
+
+        backTop.classList.toggle("visible", window.scrollY > 400);
+    }
+
+    window.addEventListener("scroll", updateScroll, { passive: true });
+    updateScroll();
+
+    backTop.addEventListener("click", () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    });
+
+
+    // DESTACAR A SEÇÃO ATUAL NO MENU
+
+    const navLinks = document.querySelectorAll(".nav-links a");
+    const pageSections = document.querySelectorAll("main section[id]");
+
+    if ("IntersectionObserver" in window) {
+        const sectionObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.classList.toggle(
+                            "active",
+                            link.getAttribute("href") === "#" + entry.target.id
+                        );
+                    });
+                }
+            });
+        }, {
+            rootMargin: "-25% 0px -65% 0px"
+        });
+
+        pageSections.forEach(section => {
+            sectionObserver.observe(section);
+        });
+    }
+
+
+    // FINALIZAR VISITA
+
+    const finishButton = document.getElementById("finishButton");
+    const finishMessage = document.getElementById("finishMessage");
+
+    finishButton.addEventListener("click", () => {
+        finishMessage.textContent =
+            "Visita finalizada. Obrigado por conhecer nosso projeto! 💙";
+
+        finishButton.textContent = "Visita concluída ✓";
+        finishButton.disabled = true;
+        finishButton.style.opacity = ".7";
+    });
+
+</script>
+
+</body>
+</html>

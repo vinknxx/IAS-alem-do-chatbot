@@ -1,0 +1,1002 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>IA Beyond | Inteligências Artificiais Além dos Chatbots</title>
+
+    <style>
+
+        /* CONFIGURAÇÕES GERAIS */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --fundo: #090b1d;
+            --fundo-card: rgba(27, 31, 67, 0.75);
+            --azul: #76dcff;
+            --roxo: #bb9aff;
+            --rosa: #ffa9d8;
+            --texto: #f7f2ff;
+            --texto-secundario: #b9bad3;
+            --borda: rgba(118, 220, 255, 0.2);
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: var(--fundo);
+            color: var(--texto);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* FUNDO DECORATIVO */
+
+        body::before {
+            content: "";
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: #334cff;
+            filter: blur(180px);
+            opacity: 0.13;
+            top: -150px;
+            left: -150px;
+            z-index: -1;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            width: 450px;
+            height: 450px;
+            background: #a14cff;
+            filter: blur(180px);
+            opacity: 0.12;
+            bottom: -150px;
+            right: -100px;
+            z-index: -1;
+        }
+
+        /* CABEÇALHO */
+
+        header {
+            min-height: 570px;
+            padding: 25px 8%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            background:
+                radial-gradient(circle at 50% 40%, rgba(80, 94, 255, 0.2), transparent 55%),
+                linear-gradient(180deg, #15183c, #090b1d);
+            border-bottom: 1px solid var(--borda);
+        }
+
+        .logo {
+            position: absolute;
+            top: 25px;
+            left: 8%;
+            color: var(--azul);
+            font-size: 19px;
+            font-weight: bold;
+            letter-spacing: 3px;
+        }
+
+        .etiqueta {
+            display: inline-block;
+            color: var(--azul);
+            border: 1px solid rgba(118, 220, 255, 0.4);
+            background: rgba(118, 220, 255, 0.08);
+            border-radius: 30px;
+            padding: 7px 18px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+        }
+
+        header h1 {
+            max-width: 900px;
+            font-size: clamp(38px, 6vw, 72px);
+            line-height: 1.12;
+            margin-bottom: 25px;
+            background: linear-gradient(90deg, #76dcff, #bb9aff, #ffa9d8);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        header p {
+            max-width: 650px;
+            color: var(--texto-secundario);
+            font-size: 17px;
+            margin-bottom: 35px;
+        }
+
+        .botao-principal {
+            display: inline-block;
+            padding: 14px 28px;
+            background: linear-gradient(100deg, var(--azul), var(--roxo));
+            color: #101127;
+            font-weight: bold;
+            border-radius: 30px;
+            transition: 0.3s;
+            box-shadow: 0 0 25px rgba(118, 220, 255, 0.2);
+        }
+
+        .botao-principal:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 35px rgba(118, 220, 255, 0.45);
+        }
+
+        /* NAVEGAÇÃO */
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(9, 11, 29, 0.9);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--borda);
+            padding: 15px 10px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        nav a {
+            color: var(--texto-secundario);
+            font-size: 13px;
+            padding: 9px 15px;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--azul);
+            background: rgba(118, 220, 255, 0.1);
+        }
+
+        /* CONTEÚDO PRINCIPAL */
+
+        main {
+            max-width: 1150px;
+            margin: auto;
+            padding: 55px 25px;
+        }
+
+        section {
+            margin-bottom: 65px;
+            scroll-margin-top: 90px;
+        }
+
+        .titulo-secao {
+            font-size: 30px;
+            margin-bottom: 15px;
+            color: var(--azul);
+        }
+
+        .subtitulo {
+            color: var(--texto-secundario);
+            margin-bottom: 30px;
+            max-width: 750px;
+        }
+
+        /* DIÁRIO DO NOTION */
+
+        .diario {
+            position: relative;
+            overflow: hidden;
+            padding: 35px;
+            border: 1px solid rgba(187, 154, 255, 0.35);
+            border-radius: 22px;
+            background:
+                linear-gradient(120deg, rgba(74, 64, 145, 0.35), transparent),
+                var(--fundo-card);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
+        }
+
+        .diario::after {
+            content: "✦";
+            position: absolute;
+            right: 35px;
+            top: 10px;
+            font-size: 110px;
+            color: rgba(187, 154, 255, 0.1);
+        }
+
+        .diario h2 {
+            color: var(--roxo);
+            font-size: 27px;
+            margin-bottom: 15px;
+        }
+
+        .diario p {
+            color: var(--texto-secundario);
+            max-width: 700px;
+            margin-bottom: 15px;
+        }
+
+        .botao-notion {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 12px 22px;
+            background: rgba(187, 154, 255, 0.15);
+            border: 1px solid var(--roxo);
+            color: var(--roxo);
+            border-radius: 25px;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .botao-notion:hover {
+            background: var(--roxo);
+            color: #111329;
+            transform: translateY(-3px);
+        }
+
+        /* INTRODUÇÃO */
+
+        .introducao {
+            padding: 40px;
+            border-radius: 22px;
+            border: 1px solid var(--borda);
+            background: var(--fundo-card);
+        }
+
+        .introducao p {
+            color: var(--texto-secundario);
+            margin-bottom: 17px;
+        }
+
+        .destaque {
+            color: var(--azul);
+            font-weight: bold;
+        }
+
+        /* EXPLICAÇÃO */
+
+        .sobre {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .sobre-card {
+            padding: 30px;
+            background: var(--fundo-card);
+            border: 1px solid var(--borda);
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+
+        .sobre-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--roxo);
+        }
+
+        .sobre-card h3 {
+            color: var(--roxo);
+            margin-bottom: 12px;
+        }
+
+        .sobre-card p {
+            color: var(--texto-secundario);
+        }
+
+        /* CARTÕES DAS INTELIGÊNCIAS ARTIFICIAIS */
+
+        .grade-ia {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px;
+        }
+
+        .card-ia {
+            position: relative;
+            padding: 30px;
+            background: var(--fundo-card);
+            border: 1px solid var(--borda);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: 0.35s;
+        }
+
+        .card-ia::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--azul), var(--roxo), var(--rosa));
+            opacity: 0.8;
+        }
+
+        .card-ia:hover {
+            transform: translateY(-8px);
+            border-color: var(--azul);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .numero {
+            color: var(--azul);
+            font-size: 13px;
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+        }
+
+        .card-ia h3 {
+            font-size: 25px;
+            color: var(--roxo);
+            margin-bottom: 10px;
+        }
+
+        .categoria {
+            display: inline-block;
+            font-size: 11px;
+            color: var(--azul);
+            border: 1px solid rgba(118, 220, 255, 0.3);
+            border-radius: 20px;
+            padding: 5px 12px;
+            margin-bottom: 18px;
+        }
+
+        .card-ia p {
+            color: var(--texto-secundario);
+            margin-bottom: 18px;
+        }
+
+        .link-ia {
+            display: inline-block;
+            color: var(--azul);
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .link-ia:hover {
+            color: var(--rosa);
+            transform: translateX(5px);
+        }
+
+        /* IMPORTÂNCIA */
+
+        .importancia-grade {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .importancia-card {
+            text-align: center;
+            padding: 28px 20px;
+            border-radius: 18px;
+            background: linear-gradient(145deg, rgba(118, 220, 255, 0.08), rgba(187, 154, 255, 0.08));
+            border: 1px solid var(--borda);
+            transition: 0.3s;
+        }
+
+        .importancia-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--roxo);
+        }
+
+        .importancia-card .simbolo {
+            font-size: 35px;
+            color: var(--azul);
+            margin-bottom: 10px;
+        }
+
+        .importancia-card h3 {
+            color: var(--roxo);
+            margin-bottom: 10px;
+        }
+
+        .importancia-card p {
+            font-size: 14px;
+            color: var(--texto-secundario);
+        }
+
+        /* CONCLUSÃO */
+
+        .conclusao {
+            padding: 40px;
+            background: linear-gradient(120deg, rgba(118, 220, 255, 0.1), rgba(187, 154, 255, 0.1));
+            border: 1px solid var(--borda);
+            border-radius: 22px;
+        }
+
+        .conclusao p {
+            color: var(--texto-secundario);
+            margin-bottom: 17px;
+        }
+
+        /* REFERÊNCIAS */
+
+        .referencias-lista {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            list-style: none;
+        }
+
+        .referencias-lista a {
+            display: block;
+            padding: 15px;
+            background: var(--fundo-card);
+            border: 1px solid var(--borda);
+            border-radius: 12px;
+            color: var(--azul);
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .referencias-lista a:hover {
+            background: rgba(118, 220, 255, 0.1);
+            border-color: var(--azul);
+        }
+
+        /* RODAPÉ */
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: #060716;
+            border-top: 1px solid var(--borda);
+        }
+
+        footer h3 {
+            color: var(--azul);
+            margin-bottom: 10px;
+        }
+
+        footer p {
+            color: var(--texto-secundario);
+            font-size: 13px;
+        }
+
+        .voltar {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--roxo);
+            font-size: 13px;
+        }
+
+        /* RESPONSIVIDADE */
+
+        @media (max-width: 750px) {
+
+            header {
+                min-height: 520px;
+                padding: 100px 20px 50px;
+            }
+
+            .logo {
+                left: 20px;
+            }
+
+            .sobre {
+                grid-template-columns: 1fr;
+            }
+
+            .grade-ia {
+                grid-template-columns: 1fr;
+            }
+
+            .importancia-grade {
+                grid-template-columns: 1fr;
+            }
+
+            .referencias-lista {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            nav ul {
+                gap: 5px;
+            }
+
+            nav a {
+                font-size: 11px;
+                padding: 7px 9px;
+            }
+
+            .titulo-secao {
+                font-size: 25px;
+            }
+
+        }
+
+        @media (max-width: 400px) {
+
+            .referencias-lista {
+                grid-template-columns: 1fr;
+            }
+
+            .diario,
+            .introducao,
+            .conclusao {
+                padding: 23px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <header id="topo">
+
+        <div class="logo">IA BEYOND.</div>
+
+        <span class="etiqueta">TECNOLOGIA • CRIATIVIDADE • INOVAÇÃO</span>
+
+        <h1>
+            Inteligências Artificiais
+            Além dos Chatbots
+        </h1>
+
+        <p>
+            A inteligência artificial está transformando o mundo
+            de maneiras que vão muito além das conversas.
+            Explore novas possibilidades da tecnologia.
+        </p>
+
+        <a href="#diario" class="botao-principal">
+            Explorar projeto
+        </a>
+
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#diario">Diário</a></li>
+            <li><a href="#inicio">Início</a></li>
+            <li><a href="#sobre">Sobre</a></li>
+            <li><a href="#exemplos">Exemplos</a></li>
+            <li><a href="#importancia">Importância</a></li>
+            <li><a href="#conclusao">Conclusão</a></li>
+            <li><a href="#referencias">Referências</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <!-- DIÁRIO DE DESENVOLVIMENTO -->
+
+        <section id="diario" class="diario">
+
+            <span class="etiqueta">REGISTRO DO PROJETO</span>
+
+            <h2>Diário de desenvolvimento</h2>
+
+            <p>
+                Todo projeto tem uma história por trás de sua criação.
+                Neste espaço, você pode acompanhar os dias de aula,
+                as atividades realizadas, os conteúdos estudados
+                e cada etapa do desenvolvimento deste trabalho.
+            </p>
+
+            <p>
+                Uma documentação da evolução do projeto,
+                desde as primeiras ideias até a finalização do site.
+            </p>
+
+            <a href="https://childlike-numeric-e5b.notion.site/Di-rio-de-desenvolvimento-do-projeto-IAs-Al-m-dos-Chatbots-414c31126b1e80458131de09fd897839?pvs=73" target="_blank"
+                rel="noopener noreferrer" class="botao-notion">
+                Acessar diário no Notion ↗
+            </a>
+
+        </section>
+
+        <!-- INTRODUÇÃO -->
+
+        <section id="inicio" class="introducao">
+
+            <span class="etiqueta">01 / INTRODUÇÃO</span>
+
+            <h2 class="titulo-secao">Bem-vindo ao nosso projeto!</h2>
+
+            <p>
+                Quando pensamos em inteligência artificial,
+                geralmente lembramos de ferramentas que respondem
+                perguntas e conversam com as pessoas.
+                Entretanto, essa tecnologia está presente em
+                muitas outras áreas.
+            </p>
+
+            <p>
+                Neste projeto, vamos explorar aplicações da
+                inteligência artificial que vão além dos sistemas
+                de conversa, mostrando como ela pode ser utilizada
+                na música, nas imagens, nos vídeos, na tradução
+                e no reconhecimento visual.
+            </p>
+
+            <p class="destaque">
+                A tecnologia não está apenas respondendo ao mundo.
+                Ela também está ajudando a criá-lo.
+            </p>
+
+        </section>
+
+        <!-- SOBRE A INTELIGÊNCIA ARTIFICIAL -->
+
+        <section id="sobre">
+
+            <span class="etiqueta">02 / CONCEITO</span>
+
+            <h2 class="titulo-secao">O que são inteligências artificiais?</h2>
+
+            <p class="subtitulo">
+                Entenda o conceito por trás das ferramentas
+                que estão transformando diferentes setores.
+            </p>
+
+            <div class="sobre">
+
+                <article class="sobre-card">
+
+                    <h3>Como funcionam?</h3>
+
+                    <p>
+                        Inteligência artificial é uma área da tecnologia
+                        que desenvolve sistemas capazes de realizar tarefas
+                        que normalmente exigiriam habilidades humanas,
+                        como reconhecer imagens, interpretar informações,
+                        produzir conteúdos e identificar padrões.
+                    </p>
+
+                </article>
+
+                <article class="sobre-card">
+
+                    <h3>Onde estão presentes?</h3>
+
+                    <p>
+                        Essas tecnologias podem funcionar de diferentes
+                        maneiras e não estão limitadas a ferramentas de
+                        conversa. Muitas delas são utilizadas diariamente
+                        em aplicativos, empresas, escolas e dispositivos.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- EXEMPLOS -->
+
+        <section id="exemplos">
+
+            <span class="etiqueta">03 / APLICAÇÕES</span>
+
+            <h2 class="titulo-secao">6 inteligências artificiais</h2>
+
+            <p class="subtitulo">
+                Cada ferramenta possui uma finalidade diferente.
+                Conheça algumas aplicações da inteligência artificial
+                em áreas criativas e tecnológicas.
+            </p>
+
+            <div class="grade-ia">
+
+                <article class="card-ia">
+
+                    <div class="numero">01 / MUSIC</div>
+
+                    <h3>Suno</h3>
+
+                    <span class="categoria">Música e áudio</span>
+
+                    <p>
+                        O Suno é uma ferramenta que utiliza inteligência
+                        artificial para criar músicas a partir de
+                        descrições e comandos fornecidos pelo usuário.
+                        É possível gerar melodias, instrumentais e canções.
+                    </p>
+
+                    <a class="link-ia" href="https://suno.com/"
+                        target="_blank" rel="noopener noreferrer">
+                        Conhecer o Suno ↗
+                    </a>
+
+                </article>
+
+                <article class="card-ia">
+
+                    <div class="numero">02 / IMAGE</div>
+
+                    <h3>Adobe Firefly</h3>
+
+                    <span class="categoria">Imagens e design</span>
+
+                    <p>
+                        O Adobe Firefly utiliza inteligência artificial
+                        para gerar imagens e auxiliar em trabalhos de
+                        edição e design. Ele permite transformar
+                        descrições em elementos visuais.
+                    </p>
+
+                    <a class="link-ia"
+                        href="https://www.adobe.com/products/firefly.html"
+                        target="_blank" rel="noopener noreferrer">
+                        Conhecer o Adobe Firefly ↗
+                    </a>
+
+                </article>
+
+                <article class="card-ia">
+
+                    <div class="numero">03 / VIDEO</div>
+
+                    <h3>Runway</h3>
+
+                    <span class="categoria">Produção de vídeos</span>
+
+                    <p>
+                        O Runway oferece ferramentas de inteligência
+                        artificial voltadas à criação e edição de vídeos.
+                        A tecnologia permite gerar cenas e modificar
+                        conteúdos audiovisuais.
+                    </p>
+
+                    <a class="link-ia" href="https://runwayml.com/"
+                        target="_blank" rel="noopener noreferrer">
+                        Conhecer o Runway ↗
+                    </a>
+
+                </article>
+
+                <article class="card-ia">
+
+                    <div class="numero">04 / VISION</div>
+
+                    <h3>Google Lens</h3>
+
+                    <span class="categoria">Reconhecimento visual</span>
+
+                    <p>
+                        O Google Lens utiliza inteligência artificial
+                        para identificar objetos, textos, plantas,
+                        animais e outros elementos através de imagens
+                        capturadas pela câmera ou armazenadas no dispositivo.
+                    </p>
+
+                    <a class="link-ia" href="https://lens.google/"
+                        target="_blank" rel="noopener noreferrer">
+                        Conhecer o Google Lens ↗
+                    </a>
+
+                </article>
+
+                <article class="card-ia">
+
+                    <div class="numero">05 / LANGUAGE</div>
+
+                    <h3>DeepL Translator</h3>
+
+                    <span class="categoria">Tradução de idiomas</span>
+
+                    <p>
+                        O DeepL utiliza inteligência artificial para
+                        traduzir textos entre diferentes idiomas,
+                        buscando preservar o sentido e o contexto
+                        das frases originais.
+                    </p>
+
+                    <a class="link-ia"
+                        href="https://www.deepl.com/translator"
+                        target="_blank" rel="noopener noreferrer">
+                        Conhecer o DeepL ↗
+                    </a>
+
+                </article>
+
+                <article class="card-ia">
+
+                    <div class="numero">06 / VOICE</div>
+
+                    <h3>ElevenLabs</h3>
+
+                    <span class="categoria">Voz e áudio</span>
+
+                    <p>
+                        O ElevenLabs utiliza inteligência artificial
+                        para produzir vozes artificiais e conteúdos
+                        de áudio. A ferramenta pode ser utilizada
+                        em narrações, projetos audiovisuais e produções
+                        digitais.
+                    </p>
+
+                    <a class="link-ia" href="https://elevenlabs.io/"
+                        target="_blank" rel="noopener noreferrer">
+                        Conhecer o ElevenLabs ↗
+                    </a>
+
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- IMPORTÂNCIA -->
+
+        <section id="importancia">
+
+            <span class="etiqueta">04 / IMPACTO</span>
+
+            <h2 class="titulo-secao">Por que essas tecnologias importam?</h2>
+
+            <p class="subtitulo">
+                A inteligência artificial pode contribuir para
+                diferentes áreas da sociedade e ampliar
+                as possibilidades humanas.
+            </p>
+
+            <div class="importancia-grade">
+
+                <article class="importancia-card">
+
+                    <div class="simbolo">✦</div>
+
+                    <h3>Criatividade</h3>
+
+                    <p>
+                        Novas possibilidades para produzir músicas,
+                        imagens, vídeos e outras formas de arte.
+                    </p>
+
+                </article>
+
+                <article class="importancia-card">
+
+                    <div class="simbolo">⌘</div>
+
+                    <h3>Praticidade</h3>
+
+                    <p>
+                        Ferramentas capazes de facilitar tarefas,
+                        otimizar processos e economizar tempo.
+                    </p>
+
+                </article>
+
+                <article class="importancia-card">
+
+                    <div class="simbolo">◎</div>
+
+                    <h3>Comunicação</h3>
+
+                    <p>
+                        Recursos que ajudam a conectar pessoas,
+                        idiomas e diferentes culturas.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- CONCLUSÃO -->
+
+        <section id="conclusao" class="conclusao">
+
+            <span class="etiqueta">05 / CONSIDERAÇÕES FINAIS</span>
+
+            <h2 class="titulo-secao">Conclusão</h2>
+
+            <p>
+                A inteligência artificial vai muito além dos
+                sistemas de conversa. Ela está presente em
+                ferramentas capazes de criar músicas, imagens,
+                vídeos, traduzir idiomas e reconhecer elementos
+                do mundo real.
+            </p>
+
+            <p>
+                Conhecer essas tecnologias é importante para
+                compreender melhor o mundo digital e perceber
+                como a inteligência artificial pode contribuir
+                para diferentes atividades humanas.
+            </p>
+
+            <p class="destaque">
+                O futuro da tecnologia também depende da maneira
+                como escolhemos utilizá-la.
+            </p>
+
+        </section>
+
+        <!-- REFERÊNCIAS -->
+
+        <section id="referencias">
+
+            <span class="etiqueta">06 / FONTES</span>
+
+            <h2 class="titulo-secao">Referências</h2>
+
+            <p class="subtitulo">
+                Sites oficiais das ferramentas apresentadas
+                neste projeto.
+            </p>
+
+            <ul class="referencias-lista">
+
+                <li>
+                    <a href="https://suno.com/" target="_blank"
+                        rel="noopener noreferrer">Suno ↗</a>
+                </li>
+
+                <li>
+                    <a href="https://www.adobe.com/products/firefly.html"
+                        target="_blank" rel="noopener noreferrer">Adobe Firefly ↗</a>
+                </li>
+
+                <li>
+                    <a href="https://runwayml.com/" target="_blank"
+                        rel="noopener noreferrer">Runway ↗</a>
+                </li>
+
+                <li>
+                    <a href="https://lens.google/" target="_blank"
+                        rel="noopener noreferrer">Google Lens ↗</a>
+                </li>
+
+                <li>
+                    <a href="https://www.deepl.com/" target="_blank"
+                        rel="noopener noreferrer">DeepL ↗</a>
+                </li>
+
+                <li>
+                    <a href="https://elevenlabs.io/" target="_blank"
+                        rel="noopener noreferrer">ElevenLabs ↗</a>
+                </li>
+
+            </ul>
+
+        </section>
+
+    </main>
+
+    <footer>
+
+        <h3>IA BEYOND.</h3>
+
+        <p>
+            Inteligências Artificiais Além dos Chatbots
+        </p>
+
+        <p>
+            Projeto escolar desenvolvido com HTML e CSS.
+        </p>
+
+        <a href="#topo" class="voltar">Voltar ao início ↑</a>
+
+    </footer>
+
+</body>
+</html>
